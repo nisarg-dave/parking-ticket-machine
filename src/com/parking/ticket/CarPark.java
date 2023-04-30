@@ -6,7 +6,9 @@ abstract class CarPark {
 
     abstract int getBaysAvailable();
 
-    abstract void bayTaken();
+    abstract void bayTaken(Ticket t);
+
+    abstract void bayFreed();
 
 }
 
@@ -14,7 +16,7 @@ class CityCarPark extends CarPark {
 
     private final Ticket[] tickets;
 
-    private int totalParkingBays;
+    private final int totalParkingBays;
 
     private int parkingBaysAvailable;
 
@@ -35,10 +37,21 @@ class CityCarPark extends CarPark {
         return this.parkingBaysAvailable;
     }
 
-    void bayTaken() {
+    void bayTaken(Ticket t) {
+        for(int i = 0; i < this.tickets.length; i++){
+            if(this.tickets[i] == null){
+                this.tickets[i] = t;
+                break;
+            }
+        }
         this.parkingBaysAvailable =- 1;
     }
 
+    void bayFreed() {
+        if(this.parkingBaysAvailable < this.totalParkingBays){
+            this.parkingBaysAvailable += 1;
+        }
+    }
 }
 
 

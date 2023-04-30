@@ -28,5 +28,11 @@ class Ticket {
         return this.ticketNumber;
     }
 
+    LocalDate getDate(){
+        return this.date;
+    }
 
+    LocalTime getEntranceTime(){
+        return this.entranceTime;
+    }
 }
