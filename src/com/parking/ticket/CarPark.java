@@ -8,8 +8,6 @@ abstract class CarPark {
 
     abstract void bayTaken();
 
-    abstract Ticket[] getTickets();
-
 }
 
 class CityCarPark extends CarPark {
@@ -41,9 +39,6 @@ class CityCarPark extends CarPark {
         this.parkingBaysAvailable =- 1;
     }
 
-    Ticket[] getTickets() {
-        return this.tickets;
-    }
 }
 
 

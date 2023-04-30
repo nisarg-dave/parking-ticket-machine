@@ -15,10 +15,11 @@ class Ticket {
 
     private int cost;
 
-    Ticket(String carParkName){
+    Ticket(){
         // inits
-        GenerateTicketNumber generateTicketNumber = new GenerateTicketNumber(carParkName);
+        GenerateTicketNumber generateTicketNumber = new GenerateTicketNumber();
         this.ticketNumber = generateTicketNumber.generateNumber();
+        generateTicketNumber.addTicketNumber(ticketNumber);
         this.date = LocalDate.now();
         this.entranceTime = LocalTime.now();
     }
