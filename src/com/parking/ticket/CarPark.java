@@ -10,6 +10,10 @@ abstract class CarPark {
 
     abstract void bayFreed();
 
+    abstract double getHourlyCost();
+
+    abstract Ticket getTicketOfUser(String enteredTicketNumber);
+
 }
 
 class CityCarPark extends CarPark {
@@ -44,13 +48,31 @@ class CityCarPark extends CarPark {
                 break;
             }
         }
-        this.parkingBaysAvailable =- 1;
+        this.parkingBaysAvailable--;
     }
 
     void bayFreed() {
         if(this.parkingBaysAvailable < this.totalParkingBays){
-            this.parkingBaysAvailable += 1;
+            this.parkingBaysAvailable++;
         }
+    }
+
+    double getHourlyCost(){
+        return this.hourlyCost;
+    }
+
+    Ticket getTicketOfUser(String enteredTicketNumber){
+
+        Ticket ticketOfUser = null;
+
+        for(Ticket t: this.tickets){
+            if(t != null && t.getTicketNumber() == enteredTicketNumber){
+                ticketOfUser = t;
+                break;
+            }
+        }
+
+        return ticketOfUser;
     }
 }
 
