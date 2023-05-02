@@ -2,6 +2,7 @@ package com.parking.ticket;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 
 class Ticket {
 
@@ -13,7 +14,6 @@ class Ticket {
 
     private LocalTime exitTime;
 
-    private int cost;
 
     Ticket(){
         // inits
@@ -34,5 +34,13 @@ class Ticket {
 
     LocalTime getEntranceTime(){
         return this.entranceTime;
+    }
+
+    void setExitTime(){
+        this.exitTime = LocalTime.now();
+    }
+
+    LocalTime getExitTime(){
+        return this.exitTime;
     }
 }

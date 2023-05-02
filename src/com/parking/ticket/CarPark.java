@@ -66,7 +66,7 @@ class CityCarPark extends CarPark {
         Ticket ticketOfUser = null;
 
         for(Ticket t: this.tickets){
-            if(t != null && t.getTicketNumber() == enteredTicketNumber){
+            if(t != null && enteredTicketNumber.compareTo(t.getTicketNumber()) == 0){
                 ticketOfUser = t;
                 break;
             }
