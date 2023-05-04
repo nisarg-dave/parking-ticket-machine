@@ -2,15 +2,13 @@ package com.parking.ticket;
 
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
-import java.time.LocalDate;
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 import java.time.Duration;
 
 public class TicketMachine {
 
     private CityCarPark cityCarPark = new CityCarPark();
-    private DateTimeFormatter dayFormatter = DateTimeFormatter.ofPattern("dd/MM/YYYY");
-    private DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
+    private DateTimeFormatter dayTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/YYYY HH:mm");
 
 
     public static void main(String args[]) {
@@ -54,16 +52,18 @@ public class TicketMachine {
         }
     }
 
-    public double calculateCost(LocalTime entranceTime, LocalTime exitTime, double hourlyCost) {
+    public double calculateCost(LocalDateTime entryTime, LocalDateTime exitTime, double hourlyCost) {
         double cost;
-        Duration timeElapsed = Duration.between(entranceTime, exitTime);
+        Duration timeElapsed = Duration.between(entryTime, exitTime);
         long timeElapsedInMinutes = timeElapsed.toMinutes();
 
         if (timeElapsedInMinutes <= 30) {
             cost = 0;
-        } else if (entranceTime.isAfter(LocalTime.parse("21:30"))) {
-            cost = 0;
-        } else {
+        }
+//        else if (entryTime.isAfter(LocalTime.parse("21:30")))
+//            cost = 0;
+//        }
+        else {
             cost = ((double) timeElapsedInMinutes / 60) * hourlyCost;
         }
 
@@ -75,14 +75,15 @@ public class TicketMachine {
         int userSelection;
 
         // New Ticket init
-        LocalDate newDate;
-        LocalTime newEntranceTime;
+        LocalDateTime newEntryTime;
         String newTicketNumber;
 
         // Existing Ticket inits
         String ticketNumberOfUser;
         Ticket ticketOfUser;
-        LocalTime exitTime;
+        LocalDateTime entryTime;
+        LocalDateTime exitTime;
+        Duration timeElapsed;
         double cost;
 
         do {
@@ -107,13 +108,10 @@ public class TicketMachine {
             case 1:
                 Ticket t = new Ticket();
                 this.cityCarPark.bayTaken(t);
-                System.out.println(this.cityCarPark.getBaysAvailable());
-                newDate = t.getDate();
-                newEntranceTime = t.getEntranceTime();
+                newEntryTime = t.getEntryTime();
                 newTicketNumber = t.getTicketNumber();
                 System.out.println("\n### Printing Ticket ###");
-                System.out.printf("Date: %s\n", this.dayFormatter.format(newDate));
-                System.out.printf("Entrance Time: %s\n", this.timeFormatter.format(newEntranceTime));
+                System.out.printf("Entrance Time: %s\n", this.dayTimeFormatter.format(newEntryTime));
                 System.out.printf("Ticket Number: %s. Please make sure to remember this.\n", newTicketNumber);
                 break;
             case 2:
@@ -122,13 +120,20 @@ public class TicketMachine {
                 ticketOfUser = this.cityCarPark.getTicketOfUser(ticketNumberOfUser);
                 if (ticketOfUser != null) {
                     ticketOfUser.setExitTime();
+                    entryTime = ticketOfUser.getEntryTime();
                     exitTime = ticketOfUser.getExitTime();
-                    cost = calculateCost(ticketOfUser.getEntranceTime(), ticketOfUser.getExitTime(), this.cityCarPark.getHourlyCost());
+//                    timeElapsed = Duration.between(entryTime, exitTime);
+                    timeElapsed = Duration.between(LocalDateTime.parse("2023-05-04T07:47:08"), LocalDateTime.parse("2023-05-05T16:04:55"));
+//                    cost = calculateCost(ticketOfUser.getEntryTime(), ticketOfUser.getExitTime(), this.cityCarPark.getHourlyCost());
 //                    cost = calculateCost(LocalTime.parse("07:47"), LocalTime.parse("16:04"), this.cityCarPark.getHourlyCost());
 //                    cost = calculateCost(LocalTime.parse("21:45"), LocalTime.parse("23:04"), this.cityCarPark.getHourlyCost());
                     System.out.println("\n### Printing Receipt ###");
-                    System.out.printf("Exit Time: %s\n", this.timeFormatter.format(exitTime));
-                    System.out.printf("Cost: $%.2f\n", cost);
+                    System.out.println("City Car Park");
+                    System.out.printf("\nEntry Time: %s\n", this.dayTimeFormatter.format(entryTime));
+                    System.out.printf("Exit Time: %s\n", this.dayTimeFormatter.format(exitTime));
+                    System.out.printf("Duration: %s \n", timeElapsed);
+                    System.out.printf("Ticket Number: %s\n", ticketNumberOfUser);
+//                    System.out.printf("Cost: $%.2f\n", cost);
                 } else {
                     System.out.println("Cannot find ticket number. Please try again.");
                 }

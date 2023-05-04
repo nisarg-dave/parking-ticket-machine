@@ -1,46 +1,38 @@
 package com.parking.ticket;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
+import java.time.LocalDateTime;
+
 
 class Ticket {
 
     private String ticketNumber;
 
-    private LocalDate date;
+    private LocalDateTime entryTime;
 
-    private LocalTime entranceTime;
-
-    private LocalTime exitTime;
+    private LocalDateTime exitTime;
 
 
-    Ticket(){
+    Ticket() {
         // inits
         GenerateTicketNumber generateTicketNumber = new GenerateTicketNumber();
         this.ticketNumber = generateTicketNumber.generateNumber();
         generateTicketNumber.addTicketNumber(ticketNumber);
-        this.date = LocalDate.now();
-        this.entranceTime = LocalTime.now();
+        this.entryTime = LocalDateTime.now();
     }
 
-    String getTicketNumber(){
+    String getTicketNumber() {
         return this.ticketNumber;
     }
 
-    LocalDate getDate(){
-        return this.date;
+    LocalDateTime getEntryTime() {
+        return this.entryTime;
     }
 
-    LocalTime getEntranceTime(){
-        return this.entranceTime;
+    void setExitTime() {
+        this.exitTime = LocalDateTime.now();
     }
 
-    void setExitTime(){
-        this.exitTime = LocalTime.now();
-    }
-
-    LocalTime getExitTime(){
+    LocalDateTime getExitTime() {
         return this.exitTime;
     }
 }
