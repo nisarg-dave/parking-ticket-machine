@@ -56,8 +56,6 @@ class CarPark {
 
         return ticketOfUser;
     }
-
-
 }
 
 class CityCarPark extends CarPark {
