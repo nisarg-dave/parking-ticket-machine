@@ -67,4 +67,28 @@ class CityCarPark extends CarPark {
     }
 }
 
+class ForeshoreCarPark extends CarPark {
+    ForeshoreCarPark() {
+        // init
+        this.setNumberOfBays(35);
+        this.setHourlyCost(1.75);
+    }
+}
+
+class HotelCarPark extends CarPark {
+    HotelCarPark() {
+        // init
+        this.setNumberOfBays(25);
+        this.setHourlyCost(4.5);
+    }
+}
+
+class WesternCarPark extends CarPark {
+    WesternCarPark() {
+        // init
+        this.setNumberOfBays(35);
+        this.setHourlyCost(1.25);
+    }
+}
+
 
