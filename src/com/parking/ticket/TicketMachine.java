@@ -123,15 +123,15 @@ public class TicketMachine {
                     entryTime = ticketOfUser.getEntryTime();
                     exitTime = ticketOfUser.getExitTime();
 //                    timeElapsed = Duration.between(entryTime, exitTime);
-                    timeElapsed = Duration.between(LocalDateTime.parse("2023-05-04T07:47:08"), LocalDateTime.parse("2023-05-05T16:04:55"));
+                    timeElapsed = Duration.between(LocalDateTime.parse("2023-05-06T08:30:00"), LocalDateTime.parse("2023-05-06T17:00:00"));
 //                    cost = calculateCost(ticketOfUser.getEntryTime(), ticketOfUser.getExitTime(), this.cityCarPark.getHourlyCost());
 //                    cost = calculateCost(LocalTime.parse("07:47"), LocalTime.parse("16:04"), this.cityCarPark.getHourlyCost());
-//                    cost = calculateCost(LocalTime.parse("21:45"), LocalTime.parse("23:04"), this.cityCarPark.getHourlyCost());
                     System.out.println("\n### Printing Receipt ###");
                     System.out.println("City Car Park");
                     System.out.printf("\nEntry Time: %s\n", this.dayTimeFormatter.format(entryTime));
                     System.out.printf("Exit Time: %s\n", this.dayTimeFormatter.format(exitTime));
-                    System.out.printf("Duration: %s \n", timeElapsed);
+                    System.out.printf("Duration: %sd. %sh. %sm. \n", timeElapsed.toDays(), timeElapsed.toHours() % 24, timeElapsed.toMinutes() % 60);
+                    System.out.println(timeElapsed);
                     System.out.printf("Ticket Number: %s\n", ticketNumberOfUser);
 //                    System.out.printf("Cost: $%.2f\n", cost);
                 } else {
