@@ -1,49 +1,27 @@
 package com.parking.ticket;
 
-abstract class CarPark {
+class CarPark {
+    private Ticket[] tickets;
 
-    abstract int getTotalBays();
-
-    abstract int getBaysAvailable();
-
-    abstract void bayTaken(Ticket t);
-
-    abstract void bayFreed();
-
-    abstract double getHourlyCost();
-
-    abstract Ticket getTicketOfUser(String enteredTicketNumber);
-
-}
-
-class CityCarPark extends CarPark {
-
-    private final Ticket[] tickets;
-
-    private final int totalParkingBays;
+    private int totalParkingBays;
 
     private int parkingBaysAvailable;
 
-    private final double hourlyCost = 2.5;
+    private double hourlyCost;
 
-    CityCarPark(){
-        // init
-        this.tickets = new Ticket[50];
-        this.totalParkingBays = this.tickets.length;
-        this.parkingBaysAvailable = this.tickets.length;
+    void setNumberOfBays(int numberOfBays) {
+        this.tickets = new Ticket[numberOfBays];
+        this.totalParkingBays = numberOfBays;
+        this.parkingBaysAvailable = numberOfBays;
     }
 
-    int getTotalBays(){
-        return this.totalParkingBays;
-    }
-
-    int getBaysAvailable(){
+    int getBaysAvailable() {
         return this.parkingBaysAvailable;
     }
 
     void bayTaken(Ticket t) {
-        for(int i = 0; i < this.tickets.length; i++){
-            if(this.tickets[i] == null){
+        for (int i = 0; i < this.tickets.length; i++) {
+            if (this.tickets[i] == null) {
                 this.tickets[i] = t;
                 break;
             }
@@ -52,27 +30,42 @@ class CityCarPark extends CarPark {
     }
 
     void bayFreed() {
-        if(this.parkingBaysAvailable < this.totalParkingBays){
+        if (this.parkingBaysAvailable < this.totalParkingBays) {
             this.parkingBaysAvailable++;
         }
     }
 
-    double getHourlyCost(){
+    void setHourlyCost(double hourlyCost) {
+        this.hourlyCost = hourlyCost;
+    }
+
+    double getHourlyCost() {
         return this.hourlyCost;
     }
 
-    Ticket getTicketOfUser(String enteredTicketNumber){
+    Ticket getTicketOfUser(String enteredTicketNumber) {
 
         Ticket ticketOfUser = null;
 
-        for(Ticket t: this.tickets){
-            if(t != null && enteredTicketNumber.compareTo(t.getTicketNumber()) == 0){
+        for (Ticket t : this.tickets) {
+            if (t != null && enteredTicketNumber.compareTo(t.getTicketNumber()) == 0) {
                 ticketOfUser = t;
                 break;
             }
         }
 
         return ticketOfUser;
+    }
+
+
+}
+
+class CityCarPark extends CarPark {
+
+    CityCarPark() {
+        // init
+        this.setNumberOfBays(50);
+        this.setHourlyCost(2.5);
     }
 }
 
