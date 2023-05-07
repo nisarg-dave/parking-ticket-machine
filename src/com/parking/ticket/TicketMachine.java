@@ -8,15 +8,35 @@ import java.time.Duration;
 
 public class TicketMachine {
 
+    /**
+     * The city car park
+     */
     private CityCarPark cityCarPark = new CityCarPark();
+
+    /**
+     * The foreshore car park
+     */
     private ForeshoreCarPark foreshoreCarPark = new ForeshoreCarPark();
+
+    /**
+     * The hotel car park
+     */
     private HotelCarPark hotelCarPark = new HotelCarPark();
+
+    /**
+     * The western car park
+     */
     private WesternCarPark westernCarPark = new WesternCarPark();
+
+    /**
+     * The day time formatter
+     */
     private DateTimeFormatter dayTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/YYYY HH:mm");
 
 
     public static void main(String[] args) {
 
+        // Create a ticket machine object
         TicketMachine ticketMachine = new TicketMachine();
 
         // initialise Scanner
@@ -27,9 +47,15 @@ public class TicketMachine {
         }
     }
 
+    /**
+     * Prints the user menu
+     *
+     * @param sc the scanner object
+     */
     private void printUserMenu(Scanner sc) {
         int carParkSelection;
 
+        // Prompts the user to select which car park they would like to go to
         do {
             System.out.println("\nPlease select which car park you would like to go to.");
             System.out.println("1) City Car Park");
@@ -45,6 +71,7 @@ public class TicketMachine {
             }
         } while (carParkSelection < 1 || carParkSelection > 5);
 
+        // Displays the car park menu of the car park selected by the user
         switch (carParkSelection) {
             case 1:
                 cityCarParkMenu(sc);
@@ -62,29 +89,45 @@ public class TicketMachine {
                 System.exit(0);
         }
 
+        // Redisplay menu unless the user wants to quit
         if (carParkSelection != 5) {
             printUserMenu(sc);
         }
     }
 
+    /**
+     * Calculates the cost
+     *
+     * @param entryTime  the entry time
+     * @param exitTime   the exit time
+     * @param hourlyCost the hourly cost of the car park
+     * @return the cost
+     */
     private double calculateCost(LocalDateTime entryTime, LocalDateTime exitTime, double hourlyCost) {
         double cost;
         Duration timeElapsed = Duration.between(entryTime, exitTime);
         long timeElapsedInMinutes = timeElapsed.toMinutes();
 
+        // If the time elapsed is less than 30 minutes, the cost is $0
         if (timeElapsedInMinutes <= 30) {
             cost = 0;
         }
-        // Else if the entrance and exit days are just a day apart and the entrance if after 10pm and exit is before 5am the next day
+        // Else if the entrance and exit days are just a day apart and the entrance if after 10pm and exit is before 5am the next day, the cost is $0
         else if (entryTime.toLocalDate().equals(exitTime.minusDays(1).toLocalDate()) && entryTime.toLocalTime().isAfter(LocalTime.parse("22:00")) && exitTime.toLocalTime().isBefore(LocalTime.parse("05:00"))) {
             cost = 0;
         } else {
+            // Calculates the cost
             cost = ((double) timeElapsedInMinutes / 60) * hourlyCost;
         }
 
         return cost;
     }
 
+    /**
+     * The city car park menu
+     *
+     * @param sc the scanner object
+     */
     private void cityCarParkMenu(Scanner sc) {
         // User selection
         int userSelection;
@@ -101,6 +144,7 @@ public class TicketMachine {
         Duration timeElapsed;
         double cost;
 
+        // Prompts the user to enter the car park or pay and exit if the there are bays available
         do {
             System.out.printf("\nWelcome to City Car Park. Bays available: %d.", this.cityCarPark.getBaysAvailable());
             if (this.cityCarPark.getBaysAvailable() == 0) {
@@ -120,6 +164,7 @@ public class TicketMachine {
 
 
         switch (userSelection) {
+            // The user enters the car park and a ticket is printed
             case 1:
                 Ticket t = new Ticket();
                 this.cityCarPark.bayTaken(t);
@@ -129,10 +174,12 @@ public class TicketMachine {
                 System.out.printf("Entrance Time: %s\n", this.dayTimeFormatter.format(newEntryTime));
                 System.out.printf("Ticket Number: %s. Please make sure to remember this.\n", newTicketNumber);
                 break;
+            // The user is prompted to enter their ticket number when exiting
             case 2:
                 System.out.print("\nPlease enter your ticket number: ");
                 ticketNumberOfUser = sc.next();
                 ticketOfUser = this.cityCarPark.getTicketOfUser(ticketNumberOfUser);
+                // If it isn't null, a receipt is printed and a bay is freed
                 if (ticketOfUser != null) {
                     this.cityCarPark.bayFreed();
                     ticketOfUser.setExitTime();
@@ -149,16 +196,24 @@ public class TicketMachine {
                     System.out.printf("Duration: %sd. %sh. %sm. \n", timeElapsed.toDays(), timeElapsed.toHours() % 24, timeElapsed.toMinutes() % 60);
                     System.out.printf("Ticket Number: %s\n", ticketNumberOfUser);
                     System.out.printf("Cost: $%.2f\n", cost);
-                } else {
+                }
+                // Else, prompts the user to try again as the ticket isn't found
+                else {
                     System.out.println("Cannot find ticket number. Please try again.");
                 }
         }
 
+        // Redisplay the menu unless the user wants to quit
         if (userSelection != 3) {
             cityCarParkMenu(sc);
         }
     }
 
+    /**
+     * The foreshore car park menu
+     *
+     * @param sc the scanner object
+     */
     private void foreshoreCarParkMenu(Scanner sc) {
         // User selection
         int userSelection;
@@ -175,6 +230,7 @@ public class TicketMachine {
         Duration timeElapsed;
         double cost;
 
+        // Prompts the user to enter the car park or pay and exit if the there are bays available
         do {
             System.out.printf("\nWelcome to Foreshore Car Park. Bays available: %d.", this.foreshoreCarPark.getBaysAvailable());
             if (this.foreshoreCarPark.getBaysAvailable() == 0) {
@@ -194,6 +250,7 @@ public class TicketMachine {
 
 
         switch (userSelection) {
+            // The user enters the car park and a ticket is printed
             case 1:
                 Ticket t = new Ticket();
                 this.foreshoreCarPark.bayTaken(t);
@@ -203,10 +260,12 @@ public class TicketMachine {
                 System.out.printf("Entrance Time: %s\n", this.dayTimeFormatter.format(newEntryTime));
                 System.out.printf("Ticket Number: %s. Please make sure to remember this.\n", newTicketNumber);
                 break;
+            // The user is prompted to enter their ticket number when exiting
             case 2:
                 System.out.print("\nPlease enter your ticket number: ");
                 ticketNumberOfUser = sc.next();
                 ticketOfUser = this.foreshoreCarPark.getTicketOfUser(ticketNumberOfUser);
+                // If it isn't null, a receipt is printed and a bay is freed
                 if (ticketOfUser != null) {
                     this.foreshoreCarPark.bayFreed();
                     ticketOfUser.setExitTime();
@@ -223,16 +282,24 @@ public class TicketMachine {
                     System.out.printf("Duration: %sd. %sh. %sm. \n", timeElapsed.toDays(), timeElapsed.toHours() % 24, timeElapsed.toMinutes() % 60);
                     System.out.printf("Ticket Number: %s\n", ticketNumberOfUser);
                     System.out.printf("Cost: $%.2f\n", cost);
-                } else {
+                }
+                // Else, prompts the user to try again as the ticket isn't found
+                else {
                     System.out.println("Cannot find ticket number. Please try again.");
                 }
         }
 
+        // Redisplay the menu unless the user wants to quit
         if (userSelection != 3) {
             foreshoreCarParkMenu(sc);
         }
     }
 
+    /**
+     * The hotel car park menu
+     *
+     * @param sc the scanner object
+     */
     private void hotelCarParkMenu(Scanner sc) {
         // User selection
         int userSelection;
@@ -249,6 +316,7 @@ public class TicketMachine {
         Duration timeElapsed;
         double cost;
 
+        // Prompts the user to enter the car park or pay and exit if the there are bays available
         do {
             System.out.printf("\nWelcome to Hotel Car Park. Bays available: %d.", this.hotelCarPark.getBaysAvailable());
             if (this.hotelCarPark.getBaysAvailable() == 0) {
@@ -268,6 +336,7 @@ public class TicketMachine {
 
 
         switch (userSelection) {
+            // The user enters the car park and a ticket is printed
             case 1:
                 Ticket t = new Ticket();
                 this.hotelCarPark.bayTaken(t);
@@ -277,10 +346,12 @@ public class TicketMachine {
                 System.out.printf("Entrance Time: %s\n", this.dayTimeFormatter.format(newEntryTime));
                 System.out.printf("Ticket Number: %s. Please make sure to remember this.\n", newTicketNumber);
                 break;
+            // The user is prompted to enter their ticket number when exiting
             case 2:
                 System.out.print("\nPlease enter your ticket number: ");
                 ticketNumberOfUser = sc.next();
                 ticketOfUser = this.hotelCarPark.getTicketOfUser(ticketNumberOfUser);
+                // If it isn't null, a receipt is printed and a bay is freed
                 if (ticketOfUser != null) {
                     this.hotelCarPark.bayFreed();
                     ticketOfUser.setExitTime();
@@ -297,16 +368,24 @@ public class TicketMachine {
                     System.out.printf("Duration: %sd. %sh. %sm. \n", timeElapsed.toDays(), timeElapsed.toHours() % 24, timeElapsed.toMinutes() % 60);
                     System.out.printf("Ticket Number: %s\n", ticketNumberOfUser);
                     System.out.printf("Cost: $%.2f\n", cost);
-                } else {
+                }
+                // Else, prompts the user to try again as the ticket isn't found
+                else {
                     System.out.println("Cannot find ticket number. Please try again.");
                 }
         }
 
+        // Redisplay the menu unless the user wants to quit
         if (userSelection != 3) {
             hotelCarParkMenu(sc);
         }
     }
 
+    /**
+     * The western car park menu
+     *
+     * @param sc the scanner object
+     */
     private void westernCarParkMenu(Scanner sc) {
         // User selection
         int userSelection;
@@ -323,6 +402,7 @@ public class TicketMachine {
         Duration timeElapsed;
         double cost;
 
+        // Prompts the user to enter the car park or pay and exit if the there are bays available
         do {
             System.out.printf("\nWelcome to Western Car Park. Bays available: %d.", this.westernCarPark.getBaysAvailable());
             if (this.westernCarPark.getBaysAvailable() == 0) {
@@ -342,6 +422,7 @@ public class TicketMachine {
 
 
         switch (userSelection) {
+            // The user enters the car park and a ticket is printed
             case 1:
                 Ticket t = new Ticket();
                 this.westernCarPark.bayTaken(t);
@@ -351,10 +432,12 @@ public class TicketMachine {
                 System.out.printf("Entrance Time: %s\n", this.dayTimeFormatter.format(newEntryTime));
                 System.out.printf("Ticket Number: %s. Please make sure to remember this.\n", newTicketNumber);
                 break;
+            // The user is prompted to enter their ticket number when exiting
             case 2:
                 System.out.print("\nPlease enter your ticket number: ");
                 ticketNumberOfUser = sc.next();
                 ticketOfUser = this.westernCarPark.getTicketOfUser(ticketNumberOfUser);
+                // If it isn't null, a receipt is printed and a bay is freed
                 if (ticketOfUser != null) {
                     this.westernCarPark.bayFreed();
                     ticketOfUser.setExitTime();
@@ -371,11 +454,14 @@ public class TicketMachine {
                     System.out.printf("Duration: %sd. %sh. %sm. \n", timeElapsed.toDays(), timeElapsed.toHours() % 24, timeElapsed.toMinutes() % 60);
                     System.out.printf("Ticket Number: %s\n", ticketNumberOfUser);
                     System.out.printf("Cost: $%.2f\n", cost);
-                } else {
+                }
+                // Else, prompts the user to try again as the ticket isn't found
+                else {
                     System.out.println("Cannot find ticket number. Please try again.");
                 }
         }
 
+        // Redisplay the menu unless the user wants to quit
         if (userSelection != 3) {
             westernCarParkMenu(sc);
         }
