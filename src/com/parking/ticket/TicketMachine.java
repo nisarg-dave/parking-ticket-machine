@@ -15,7 +15,7 @@ public class TicketMachine {
     private DateTimeFormatter dayTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/YYYY HH:mm");
 
 
-    public static void main(String args[]) {
+    public static void main(String[] args) {
 
         TicketMachine ticketMachine = new TicketMachine();
 
@@ -27,7 +27,7 @@ public class TicketMachine {
         }
     }
 
-    public void printUserMenu(Scanner sc) {
+    private void printUserMenu(Scanner sc) {
         int carParkSelection;
 
         do {
@@ -67,7 +67,7 @@ public class TicketMachine {
         }
     }
 
-    public double calculateCost(LocalDateTime entryTime, LocalDateTime exitTime, double hourlyCost) {
+    private double calculateCost(LocalDateTime entryTime, LocalDateTime exitTime, double hourlyCost) {
         double cost;
         Duration timeElapsed = Duration.between(entryTime, exitTime);
         long timeElapsedInMinutes = timeElapsed.toMinutes();
@@ -85,7 +85,7 @@ public class TicketMachine {
         return cost;
     }
 
-    public void cityCarParkMenu(Scanner sc) {
+    private void cityCarParkMenu(Scanner sc) {
         // User selection
         int userSelection;
 
@@ -159,7 +159,7 @@ public class TicketMachine {
         }
     }
 
-    public void foreshoreCarParkMenu(Scanner sc) {
+    private void foreshoreCarParkMenu(Scanner sc) {
         // User selection
         int userSelection;
 
@@ -233,7 +233,7 @@ public class TicketMachine {
         }
     }
 
-    public void hotelCarParkMenu(Scanner sc) {
+    private void hotelCarParkMenu(Scanner sc) {
         // User selection
         int userSelection;
 
@@ -307,7 +307,7 @@ public class TicketMachine {
         }
     }
 
-    public void westernCarParkMenu(Scanner sc) {
+    private void westernCarParkMenu(Scanner sc) {
         // User selection
         int userSelection;
 
